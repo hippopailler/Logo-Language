@@ -1,0 +1,12 @@
+set taille 100
+
+repeat 18 [
+    square taille
+    right 20
+    penup
+    forward 50
+    pendown
+    mod taille - 5
+]
+
+
