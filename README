@@ -1,0 +1,112 @@
+# Projet Logo - Interpréteur en OCaml
+
+Ce projet est un interpréteur du langage Logo implémenté en OCaml. Il permet de dessiner des formes géométriques en contrôlant une "tortue" virtuelle à l'écran.
+
+## Fonctionnalités
+
+- Commandes de base (forward, right, left)
+- Gestion du stylo (penup, pendown)
+- Couleurs (setcolor)
+- Boucles (repeat)
+- Variables et opérations
+- Formes prédéfinies (square)
+
+## Prérequis
+
+- OCaml (version recommandée : 4.13.0 ou supérieure)
+- Module Graphics
+- OCamlfind
+
+## Installation
+
+1. Installez OCaml et OPAM :
+```bash
+sudo apt-get update
+sudo apt-get install ocaml opam
+```
+
+2. Initialisez OPAM :
+```bash
+opam init
+eval $(opam env)
+```
+
+3. Installez les dépendances :
+```bash
+opam install graphics
+opam install ocamlfind
+```
+
+## Compilation
+
+Pour compiler le projet :
+```bash
+ocamlfind ocamlc -package graphics -linkpkg -o logo ast.ml parser.ml exec.ml main.ml
+```
+
+## Utilisation
+
+1. Créez un fichier avec l'extension `.logo`
+2. Exécutez votre programme :
+```bash
+./logo votre_fichier.logo
+```
+
+## Syntaxe du langage
+
+### Commandes de base
+- `forward N` : Avance de N pixels
+- `right N` : Tourne à droite de N degrés
+- `left N` : Tourne à gauche de N degrés
+- `penup` : Lève le stylo
+- `pendown` : Pose le stylo
+- `clear` : Efface l'écran
+
+### Couleurs
+- `setcolor N` : Change la couleur (0-7)
+  - 0: noir
+  - 1: blanc
+  - 2: rouge
+  - 3: vert
+  - 4: bleu
+  - 5: jaune
+  - 6: cyan
+  - 7: magenta
+
+### Variables
+- `set nom valeur` : Définit une variable
+- `mod nom + valeur` : Ajoute une valeur à la variable
+- `mod nom - valeur` : Soustrait une valeur à la variable
+
+### Boucles
+```logo
+repeat N [
+    commandes
+]
+```
+
+## Exemple
+
+```logo
+set taille 100
+
+repeat 18 [
+    square taille
+    right 20
+    penup
+    forward 50
+    pendown
+    mod taille - 5
+]
+```
+
+## Structure du projet
+
+- `ast.ml` : Définition des types du langage
+- `parser.ml` : Analyse syntaxique
+- `exec.ml` : Exécution des commandes
+- `main.ml` : Point d'entrée du programme
+
+## Auteur
+
+Hippolyte PAILLER
