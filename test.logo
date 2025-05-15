@@ -1,5 +1,6 @@
 set taille 100
 
+
 repeat 18 [
     square taille
     right 20
