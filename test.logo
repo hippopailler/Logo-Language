@@ -1,5 +1,6 @@
 set taille 100
-
+set couleur 0
+setcolor couleur
 
 repeat 18 [
     square taille
@@ -8,6 +9,11 @@ repeat 18 [
     forward 50
     pendown
     mod taille - 5
+    mod couleur + 1
+    setcolor couleur
 ]
+
+
+
 
 

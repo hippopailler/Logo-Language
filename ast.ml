@@ -1,13 +1,21 @@
+type binop = Add | Sub | Mul | Div | Eq | Neq | Lt | Gt | Le | Ge
+
+type expr =
+  | Econst of int
+  | Evar of string
+  | Ebinop of binop * expr * expr
+
 type command =
-  | Forward of int
-  | Right of int
-  | Left of int
+  | Forward of expr
+  | Right of expr
+  | Left of expr
   | PenUp
   | PenDown
   | Clear
-  | Repeat of int * command list
-  | SetColor of int
-  | Square of int
-  | SetVar of string * int  (* Nouvelle commande pour définir une variable *)
-  | GetVar of string        (* Nouvelle commande pour utiliser une variable *)
-  | ModVar of string * char * int  (* Nouvelle commande pour modifier une variable: nom, opérateur (+/-), valeur *)
+  | Repeat of expr * command list
+  | SetColor of expr
+  | Square of expr
+  | SetVar of string * expr
+  | ModVar of string * char * expr
+  | If of expr * command list
+
