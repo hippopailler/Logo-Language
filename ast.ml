@@ -15,7 +15,9 @@ type command =
   | Repeat of expr * command list
   | SetColor of expr
   | Square of expr
+  | Circle of expr
   | SetVar of string * expr
   | ModVar of string * char * expr
   | If of expr * command list
+  | SetPenSize of expr
 

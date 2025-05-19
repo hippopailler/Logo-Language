@@ -64,6 +64,9 @@ let rec exec_command state cmd =
         | _ -> black
       in
       set_color color
+  | SetPenSize e ->
+      let size = eval_expr state e in
+      set_line_width size
   | Clear -> clear_graph ()
   | Repeat (e, cmds) ->
       let n = eval_expr state e in
@@ -76,6 +79,18 @@ let rec exec_command state cmd =
         exec_command state (Forward (Econst n));
         exec_command state (Right (Econst 90))
       done
+  | Circle e ->
+      let n = eval_expr state e in
+      let radius = float_of_int n in
+      let steps = 360 in
+      for i = 0 to steps - 1 do
+        let angle = float_of_int i *. (2.0 *. Float.pi /. float_of_int steps) in
+        let x' = state.x +. radius *. cos angle in
+        let y' = state.y +. radius *. sin angle in
+        if state.pen then lineto (int_of_float x') (int_of_float y')
+        else moveto (int_of_float x') (int_of_float y');
+      done;
+  
   | SetVar (name, e) ->
       let value = eval_expr state e in
       state.variables <- (name, value) :: (List.remove_assoc name state.variables)
