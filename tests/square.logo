@@ -1,0 +1,16 @@
+setcolor 2  
+fill [
+    repeat 4 [
+        forward 100
+        right 90
+    ]
+]
+
+
+setcolor 3  
+fill [
+    repeat 5 [
+        forward 100
+        right 144
+    ]
+]

@@ -1,0 +1,18 @@
+def carre(taille) {
+    repeat 4 [
+        forward taille
+        right 90
+    ]
+}
+
+
+def spirale(taille, angle) {
+    if taille > 0 [
+        carre(taille)
+        right angle
+        spirale(taille - 10, angle)
+    ]
+}
+
+setcolor 2
+spirale(400, 30)

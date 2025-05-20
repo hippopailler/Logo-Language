@@ -12,9 +12,14 @@ open Ast
 %token EOF
 %token SETPENSIZE
 %token FILL
+%token DEF
+%token LBRACE RBRACE
+%token COMMA
+%token LPAREN RPAREN
 
-%left PLUS MINUS
-%left TIMES DIV
+%left EQUAL NEQ LT GT LE GE   
+%left PLUS MINUS              
+%left TIMES DIV               
 
 %start program
 %type <Ast.command list> program
@@ -47,6 +52,24 @@ command:
                         { Repeat($2, $4) }
   | IF expr LBRACKET list RBRACKET 
                         { If($2, $4) }
+  | DEF IDENT LPAREN params RPAREN LBRACE list RBRACE
+                        { Procedure($2, $4, $7) }
+  | IDENT LPAREN args RPAREN
+                        { Call($1, $3) }
+  | IDENT LBRACKET args RBRACKET
+                        { Call($1, $3) }
+;
+
+params:
+  | /* empty */          { [] }
+  | IDENT                { [$1] }
+  | IDENT COMMA params   { $1 :: $3 }
+;
+
+args:
+  | /* empty */          { [] }
+  | expr                 { [$1] }
+  | expr COMMA args      { $1 :: $3 }
 ;
 
 expr:

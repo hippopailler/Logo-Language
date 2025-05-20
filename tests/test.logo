@@ -1,0 +1,28 @@
+set taille 100
+set couleur 1
+setcolor couleur
+set b 20
+set pensize b
+repeat 18 [
+    square taille
+    right 20
+    penup
+    forward 50
+    pendown
+    mod taille - 5
+    mod couleur + 1
+    if couleur = 7 [
+        set couleur 0
+    ]
+    mod b - 1
+    setpensize b
+    setcolor couleur
+
+]
+// ceci est un test de commentaires
+circle 100
+
+
+
+
+

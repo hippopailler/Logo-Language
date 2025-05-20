@@ -9,6 +9,8 @@ type state = {
   mutable variables : (string * int) list;
 }
 
+let functions = Hashtbl.create 17
+
 let deg_to_rad d = d *. Float.pi /. 180.
 
 let rec eval_expr state = function
@@ -109,6 +111,22 @@ let rec exec_command state cmd =
   | If (cond, cmds) ->
       if eval_expr state cond <> 0 then
         List.iter (exec_command state) cmds
+  | Procedure (name, params, body) ->
+      Hashtbl.add functions name (params, body)
+  | Call (name, args) ->
+      let params, body =
+        try Hashtbl.find functions name
+        with Not_found -> failwith ("Fonction non définie : " ^ name)
+      in
+      if List.length params <> List.length args then
+        failwith ("Nombre d'arguments incorrect pour la fonction : " ^ name);
+      let local_vars =
+        List.combine params (List.map (eval_expr state) args)
+      in
+      let old_vars = state.variables in
+      state.variables <- local_vars @ state.variables;
+      List.iter (exec_command state) body;
+      state.variables <- old_vars
 
 let exec_commands cmds =
   open_graph " 1000x1000";

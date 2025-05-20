@@ -9,7 +9,7 @@ Ce projet est un interpréteur du langage Logo implémenté en OCaml. Il permet 
 - Couleurs (setcolor)
 - Boucles (repeat)
 - Variables et opérations
-- Formes prédéfinies (square)
+- Formes prédéfinies (square, circle)
 
 ## Prérequis
 

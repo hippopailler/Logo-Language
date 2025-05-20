@@ -1,0 +1,39 @@
+def zig(n) [
+    if n > 1 [
+        zig(n/2)
+        zag(n/2)
+        zig(n/2)
+        zag(n/2)
+    ]
+    set d 15
+    left 90
+    forward d
+    left 90
+    forward d
+]
+
+def zag(n) [
+    if n > 1 [
+        zag(n/2)
+        zag(n/2)
+        zig(n/2)
+        zag(n/2)
+    ]
+    set d 15
+    right 90
+    forward d
+    right 90
+    forward d
+    left 90
+    forward d
+]
+
+penup
+forward -250
+right 90
+forward 250
+pendown
+
+zig(16)
+setcolor 2
+zig(16)

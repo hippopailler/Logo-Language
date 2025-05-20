@@ -20,4 +20,6 @@ type command =
   | ModVar of string * char * expr
   | If of expr * command list
   | SetPenSize of expr
+  | Procedure of string * string list * command list  (* Définition de fonction : nom, paramètres, corps *)
+  | Call of string * expr list                        (* Appel de fonction : nom, arguments *)
 
