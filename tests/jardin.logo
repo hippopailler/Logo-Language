@@ -1,0 +1,95 @@
+def fleur(taille) {
+    set c random(6)
+    setcolor c
+    save
+    repeat 8 [
+        forward taille
+        circle taille/2
+        restore
+        right 45
+        save
+    ]
+    restore
+    setcolor 3
+    right 90
+    forward taille*2
+    
+    // Feuilles
+    save
+    right 45
+    forward taille/2
+    triangle taille/3
+    restore
+    left 45
+    forward taille/2
+    triangle taille/3
+}
+
+def herbe(taille) {
+    setcolor 3
+    save
+    set angle random(20)
+    left angle
+    forward taille
+    restore
+}
+
+def papillon(taille) {
+    set c random(7)
+    setcolor c
+    repeat 2 [
+        save
+        repeat 180 [
+            forward taille/20
+            right 2
+        ]
+        restore
+        right 180
+    ]
+    setcolor 0
+    right 90
+    forward taille
+}
+
+// Position initiale
+penup
+forward 200
+left 90
+forward 150
+right 90
+pendown
+
+// Dessin des fleurs
+repeat 10 [
+    set taille random(30) + 20
+    fleur(taille)
+    penup
+    set dist random(100) + 50
+    forward dist
+    left 90
+    forward random(100)
+    right 90
+    pendown
+]
+
+// Herbe
+repeat 20 [
+    penup
+    forward random(800)
+    left 90
+    forward random(100)
+    right 90
+    pendown
+    herbe(30)
+]
+
+// Papillons
+repeat 3 [
+    penup
+    forward random(300)
+    left 90
+    forward random(200)
+    right random(360)
+    pendown
+    papillon(40)
+]

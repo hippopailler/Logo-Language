@@ -1,0 +1,50 @@
+// Test des commandes save/restore
+// Dessin d'une fleur
+right 180
+penup
+forward 400
+pendown
+right 180
+repeat 10[
+    // Initialisation
+    set x random (6)
+    setcolor x  // Rouge
+    pendown
+
+    // Position centrale de la fleur
+    forward 0   // Pour fixer le point initial
+    save        // Sauvegarde de la position centrale
+
+    // Dessin des pétales
+    repeat 8 [
+        save      // Sauvegarde avant chaque pétale
+        forward 30
+        circle 20
+        restore   // Retour au centre
+        right 45  // Rotation pour le prochain pétale
+    ]
+
+    // Dessin de la tige
+    setcolor 3  // Vert
+    right 90
+    forward 100
+
+    // Première feuille
+    save        // Sauvegarde position sur la tige
+    right 120
+    forward 20
+    triangle 25
+
+    // Deuxième feuille
+    restore     // Retour sur la tige
+    left 135
+    forward 20
+    triangle 30
+
+    restore
+    set b random (100)
+    penup
+    forward b+50
+    pendown
+]
+

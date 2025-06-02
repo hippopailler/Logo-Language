@@ -1,12 +1,20 @@
 open Graphics
 open Ast
 
+type saved_state = {
+    x : float;
+    y : float;
+    angle : float;
+    pen : bool;
+}
+
 type state = {
   mutable x : float;
   mutable y : float;
   mutable angle : float;
   mutable pen : bool;
   mutable variables : (string * int) list;
+  mutable saved_states : saved_state list;  (* Nouvelle pile d'états *)
 }
 
 let functions = Hashtbl.create 17
@@ -18,6 +26,9 @@ let rec eval_expr state = function
   | Evar v -> 
       (try List.assoc v state.variables 
        with Not_found -> failwith ("Variable non définie: " ^ v))
+  | Erandom e ->      (* Déplacer cette clause ici, au niveau des expressions *)
+      let n = eval_expr state e in
+      if n <= 0 then 0 else Random.int n
   | Ebinop (op, e1, e2) ->
       let v1 = eval_expr state e1 in
       let v2 = eval_expr state e2 in
@@ -92,6 +103,12 @@ let rec exec_command state cmd =
         if state.pen then lineto (int_of_float x') (int_of_float y')
         else moveto (int_of_float x') (int_of_float y');
       done;
+  | Triangle e ->
+      let n = eval_expr state e in
+      for _ = 1 to 3 do
+        exec_command state (Forward (Econst n));
+        exec_command state (Right (Econst 120))
+      done
   
   | SetVar (name, e) ->
       let value = eval_expr state e in
@@ -127,16 +144,37 @@ let rec exec_command state cmd =
       state.variables <- local_vars @ state.variables;
       List.iter (exec_command state) body;
       state.variables <- old_vars
+  | Save ->
+        let current = {
+            x = state.x;
+            y = state.y;
+            angle = state.angle;
+            pen = state.pen;
+        } in
+        state.saved_states <- current :: state.saved_states
+
+    | Restore ->
+        match state.saved_states with
+        | [] -> failwith "Erreur : aucun état sauvegardé"
+        | s :: rest ->
+            state.x <- s.x;
+            state.y <- s.y;
+            state.angle <- s.angle;
+            state.pen <- s.pen;
+            state.saved_states <- rest;
+            moveto (int_of_float state.x) (int_of_float state.y)
 
 let exec_commands cmds =
-  open_graph " 1000x1000";
-  let state = { 
-    x = 500.0; 
-    y = 500.0; 
-    angle = 0.0; 
-    pen = true;
-    variables = [] 
-  } in
-  moveto (int_of_float state.x) (int_of_float state.y);
-  List.iter (exec_command state) cmds;
-  ignore (read_line ())
+    Random.self_init (); 
+    open_graph " 1000x1000";
+    let state = { 
+        x = 500.0; 
+        y = 500.0; 
+        angle = 0.0; 
+        pen = true;
+        variables = [];
+        saved_states = [] 
+    } in
+    moveto (int_of_float state.x) (int_of_float state.y);
+    List.iter (exec_command state) cmds;
+    ignore (read_line ())

@@ -10,6 +10,7 @@ Ce projet est un interpréteur du langage Logo implémenté en OCaml. Il permet 
 - Boucles (repeat)
 - Variables et opérations
 - Formes prédéfinies (square, circle)
+- Ecriture de fonctions et utilisation en récursivité possible
 
 ## Prérequis
 

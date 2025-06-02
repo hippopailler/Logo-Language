@@ -14,5 +14,16 @@ def spirale(taille, angle) {
     ]
 }
 
-setcolor 2
-spirale(400, 30)
+def etoile(taille){
+    if taille > 20 [
+    repeat 6 [
+        carre(taille)
+        right 60
+    ]
+    right 5
+    etoile (taille - 5)
+    ]
+}
+
+setcolor 6
+etoile(200)
