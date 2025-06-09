@@ -4,13 +4,33 @@ Ce projet est un interpréteur du langage Logo implémenté en OCaml. Il permet 
 
 ## Fonctionnalités
 
-- Commandes de base (forward, right, left)
+### Commandes de base
+- Déplacement (forward, right, left)
 - Gestion du stylo (penup, pendown)
-- Couleurs (setcolor)
-- Boucles (repeat)
+- Épaisseur du trait (pensize)
+- Effacement (clear)
+
+### Gestion des états
+- Sauvegarde de position (save)
+- Restauration de position (restore)
+
+### Couleurs et styles
+- Sélection de couleur (setcolor)
+- Palette de 8 couleurs (0-7)
+- Épaisseur du trait variable
+
+### Formes prédéfinies
+- Carré (square)
+- Cercle (circle)
+- Triangle (triangle)
+
+### Programmation
 - Variables et opérations
-- Formes prédéfinies (square, circle)
-- Ecriture de fonctions et utilisation en récursivité possible
+- Fonctions définissables
+- Boucles (repeat)
+- Conditions (if)
+- Nombres aléatoires (random)
+- Récursivité possible
 
 ## Prérequis
 
@@ -40,73 +60,92 @@ opam install ocamlfind
 
 ## Compilation
 
-Pour compiler le projet :
 ```bash
-ocamlfind ocamlc -package graphics -linkpkg -o logo ast.ml parser.ml exec.ml main.ml
+make clean
+make
 ```
-
-## Utilisation
-
-1. Créez un fichier avec l'extension `.logo`
-2. Exécutez votre programme :
-```bash
-./logo votre_fichier.logo
-```
+./logo tests/fichier.logo
 
 ## Syntaxe du langage
 
-### Commandes de base
-- `forward N` : Avance de N pixels
-- `right N` : Tourne à droite de N degrés
-- `left N` : Tourne à gauche de N degrés
-- `penup` : Lève le stylo
-- `pendown` : Pose le stylo
-- `clear` : Efface l'écran
+### Nouvelles commandes
+- `save` : Sauvegarde la position actuelle
+- `restore` : Retourne à la dernière position sauvegardée
+- `random(N)` : Génère un nombre aléatoire entre 0 et N-1
+- `triangle N` : Dessine un triangle équilatéral de côté N
 
-### Couleurs
-- `setcolor N` : Change la couleur (0-7)
-  - 0: noir
-  - 1: blanc
-  - 2: rouge
-  - 3: vert
-  - 4: bleu
-  - 5: jaune
-  - 6: cyan
-  - 7: magenta
-
-### Variables
-- `set nom valeur` : Définit une variable
-- `mod nom + valeur` : Ajoute une valeur à la variable
-- `mod nom - valeur` : Soustrait une valeur à la variable
-
-### Boucles
+### Définition de fonctions
 ```logo
-repeat N [
+def nom_fonction(param) {
+    commandes
+}
+```
+
+### Structures conditionnelles
+```logo
+if condition [
     commandes
 ]
 ```
 
-## Exemple
+## Exemples
 
+### Fleur colorée
 ```logo
-set taille 100
+def fleur(taille) {
+    set c random(6)
+    setcolor c
+    save
+    repeat 8 [
+        forward taille
+        circle taille/2
+        restore
+        right 45
+        save
+    ]
+    restore
+    setcolor 3
+    right 90
+    forward taille*2
+}
 
-repeat 18 [
-    square taille
-    right 20
+repeat 10 [
+    fleur(50)
     penup
-    forward 50
+    forward 100
     pendown
-    mod taille - 5
 ]
+```
+
+### Spirale avec sauvegarde d'état
+```logo
+def spirale(taille) {
+    if taille > 5 [
+        save
+        forward taille
+        right 60
+        spirale(taille - 5)
+        restore
+    ]
+}
 ```
 
 ## Structure du projet
 
 - `ast.ml` : Définition des types du langage
-- `parser.ml` : Analyse syntaxique
+- `parser.mly` : Grammaire du langage
+- `lexer.mll` : Analyse lexicale
 - `exec.ml` : Exécution des commandes
-- `main.ml` : Point d'entrée du programme
+- `main.ml` : Point d'entrée et gestion des erreurs
+
+
+## Structures des tests : 
+Dans le dossier test, une série de fichiers .logo sont disponibles pour illustrer les possibilités de notre langage : 
+- pour les exécuter : ./logo tests/fichier.logo
+
+- fonction.logo : illustre la création de fonctions et des boucles (conditionelles ou non)
+- glou.logo : illustre la définition des variables et les opérations méthématiques associées.
+- jardin.logo : sert à illustrer l'utilisation des fonctions et des fonctions save (position) et restore, ainsi que l'aléatoire random
 
 ## Auteur
 

@@ -1,24 +1,60 @@
+// Test des variables et operations mathematiques
 
-set x 50
-forward x + 10
-right 90
-repeat x / 10 [
-  forward x - 5
-  right 36
+// Initialisation des variables
+set base 100
+set hauteur 50
+set angle 45
+
+set diagonale base * base / 2 + hauteur * hauteur / 2
+set increment base / 10
+
+// Dessin avec calculs
+setcolor 2  // Rouge
+repeat 8 [
+    // Utilisation des variables dans les expressions
+    forward base + increment
+    right angle + 15
+    set base base - increment
+    
+    // Test des comparaisons
+    if base > 20 [
+        setcolor 3  // Vert
+        square base / 2
+    ]
 ]
 
-set x 200
-square x
+// Reset position
+right 180
+forward 200
 
-if x > 50 [
-    setcolor 3
-    square 400
-]
-
-setcolor 1
-set taille 100
-repeat 10 [
+// Démonstration des opérations avec mod
+set compteur 100
+repeat 6 [
+    // Test de la division et du modulo
+    set taille compteur / 2
+    setcolor compteur / 20  // Change de couleur progressivement
+    
+    // Dessine des carrés de taille décroissante
     square taille
-    mod taille - 10
+    mod compteur - 15
+    right 60
+]
 
+// Test des expressions complexes
+set x 50
+set y 30
+forward x + y
+right x * 2
+forward y * 3
+left x + y / 2
+
+// Test des comparaisons
+if x > y [
+    setcolor 4
+    circle x
+] 
+
+if x * 2 > y * 3 [
+    setcolor 5
+    triangle y
 ]

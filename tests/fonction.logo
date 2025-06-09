@@ -25,5 +25,5 @@ def etoile(taille){
     ]
 }
 
-setcolor 6
+setcolor 4
 etoile(200)
